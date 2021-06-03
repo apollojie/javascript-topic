@@ -49,17 +49,23 @@ function filterMethod(value, source) {
 
 /**
  * 本题中tree的遍历使用dfs深度优先，执行顺序与koa-compose洋葱模型类似。
+ * 如果对dfs执行顺序不理解，可以放开console语句在控制台查看打印结果
  */
 function traverse(node) {
     let childrens = node.childrens || [];
     node.visible = filterMethod(value, node)
     let childFilter = []
     //console.log('traverse--执行顺序', node)
+    // 树形遍历
     childrens.forEach(child => {
         child.visible = filterMethod(value, child)
         let result = traverse(child)
-        if(result) {childFilter.push(result);node.childrens = childFilter}
+        if(result) {
+            childFilter.push(result);
+            node.childrens = childFilter
+        }
     })
+    // filter返回满足条件的child
     if(!node.visible && !(node.childrens || node.childrens.length)) {
         return false
     } else {
