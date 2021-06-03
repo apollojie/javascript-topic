@@ -28,14 +28,14 @@ function copyTree(tree) {
     let clone = Array.isArray(tree) ? [] : {};
     if(tree && typeof tree==='object') {
         Object.keys(tree).forEach(key => {
-            clone[key] = copyTree(tree)
+            clone[key] = copyTree(tree[key])
         })
     } else {
         return tree
     }
+    return clone
 }
 console.log(copyTree(tree))
-console.log(data)
 
 /**
  * element-ui中tree树形组件过滤
@@ -63,10 +63,12 @@ function traverse(node) {
         if(result) {
             childFilter.push(result);
             node.childrens = childFilter
+        } else {
+            delete node.childrens
         }
     })
     // filter返回满足条件的child
-    if(!node.visible && !(node.childrens || node.childrens.length)) {
+    if(!node.visible && (!node.childrens || !node.childrens.length)) {
         return false
     } else {
         return node
